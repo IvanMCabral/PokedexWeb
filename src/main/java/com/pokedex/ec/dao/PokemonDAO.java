@@ -163,6 +163,40 @@ public class PokemonDAO {
         return Pokemonlist;
 
     }
+    
+    public Pokemon getPokemon(Connection con, int id) {
+        Statement st;
+        ResultSet rs;
+        Pokemon pokemon = new Pokemon();
+        try {
+
+            st = con.createStatement();
+
+            String sql = "SELECT * FROM POKEMON WHERE IDPOKEMON= " + "'" + id + "'";
+
+            rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                
+                pokemon.setName(rs.getString("NAME"));
+                pokemon.setType(rs.getString("TYPE"));
+                pokemon.setType2(rs.getString("TYPE2"));
+                pokemon.setLevel(rs.getInt("LEVEL"));
+                pokemon.setEvolution(rs.getInt("EVOLUTION"));
+                pokemon.setUser(rs.getString("USER"));
+                
+
+            }
+
+        } catch (SQLException e) {
+
+            message = "ERROR SAVE \n " + e.getMessage();
+        }
+
+        return pokemon;
+
+    }
+    
 
     public ArrayList<Types> getTypes(Connection con) {
         PreparedStatement st = null;

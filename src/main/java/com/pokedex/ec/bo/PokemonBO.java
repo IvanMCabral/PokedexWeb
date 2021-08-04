@@ -127,6 +127,31 @@ public class PokemonBO {
     }
     
     
+    public Pokemon loadPokemon(int id) {
+        Connection conn = Conexion.getConnection();
+
+        Pokemon PokemonOnly = new Pokemon();
+
+        try {
+
+            PokemonOnly = pdao.getPokemon(conn, id);
+
+        } catch (Exception e) {
+
+            message = message + " " + e.getMessage();
+        }//finally try
+        finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+
+                }
+            } catch (Exception e) {
+                message = message + " " + e.getMessage();
+            }
+        }return PokemonOnly;
+    }
+    
     public ArrayList<Types> loadTypes() {
         Connection conn = Conexion.getConnection();
 

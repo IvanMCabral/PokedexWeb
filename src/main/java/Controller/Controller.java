@@ -9,6 +9,7 @@ import com.pokedex.ec.bo.PokemonBO;
 import com.pokedex.ec.entity.Pokemon;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author 
+ * @author
  */
 public class Controller extends HttpServlet {
 
@@ -26,6 +27,8 @@ public class Controller extends HttpServlet {
     String add = "views/add.jsp";
     String edit = "views/edit.jsp";
     String modify = "views/modify.jsp";
+    int idPokemon;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -49,6 +52,7 @@ public class Controller extends HttpServlet {
             out.println("<h1>Servlet Controller at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
+
         }
     }
 
@@ -74,25 +78,24 @@ public class Controller extends HttpServlet {
         } else if (action.equalsIgnoreCase("modify")) {
             access = modify;
 
-        } else if (action.equalsIgnoreCase("Add Pokemon")) {
-            Pokemon p = new Pokemon();
-            String name = request.getParameter("name");
-            p.setName(name);
-            String type = request.getParameter("type");
-            p.setType(type);
-            String type2 = request.getParameter("type2");
-            p.setType2(type2);
-            p.setLevel(Integer.parseInt(request.getParameter("level")));
-            String user = request.getParameter("user");
-            p.setUser(user);
+        } else if (action.equalsIgnoreCase("edit")) {
 
-            String message = pbo.addPokemon(p);
+            Pokemon pokemon = new Pokemon();
+            idPokemon = Integer.parseInt(request.getParameter("id"));
+            pokemon = pbo.loadPokemon(idPokemon);
+            request.setAttribute("pokemonSelected", pokemon);
+            access = modify;
+            request.getRequestDispatcher(access);
 
-            if (message == "New Pokemon Inserted!!") {
-                access = list;
-            }
+        }
+        else if (action.equalsIgnoreCase("delete")) {
 
-            System.out.println("paso por aca");
+            
+            idPokemon = Integer.parseInt(request.getParameter("id"));
+            pbo.deletePokemon(idPokemon);
+            
+            access = modify;
+            request.getRequestDispatcher(access);
 
         }
 
@@ -112,16 +115,64 @@ public class Controller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String menu = request.getParameter("menu");
+        String access = "";
+        String action = request.getParameter("action");
+
+        if (menu.equals("pokemon")) {
+            switch (action) {
+                case "Add Pokemon":
+                    Pokemon p = new Pokemon();
+                    String name = request.getParameter("name");
+                    p.setName(name);
+                    String type = request.getParameter("type");
+                    p.setType(type);
+                    String type2 = request.getParameter("type2");
+                    p.setType2(type2);
+                    p.setLevel(Integer.parseInt(request.getParameter("level")));
+                    String user = request.getParameter("user");
+                    p.setUser(user);
+
+                    String message = pbo.addPokemon(p);
+
+                    if (message == "New Pokemon Inserted!!") {
+                        access = list;
+                    }
+                    break;
+                case "Modify Pokemon":
+                    p = new Pokemon();
+                    
+                    name = request.getParameter("name");
+                    p.setName(name);
+                    type = request.getParameter("type");
+                    p.setType(type);
+                    type2 = request.getParameter("type2");
+                    p.setType2(type2);
+                    p.setLevel(Integer.parseInt(request.getParameter("level")));
+                    user = request.getParameter("user");
+                    p.setUser(user);
+                    p.setIdpokemon(idPokemon);
+                    pbo.modifyPokemon(p);
+                    access = modify;
+                    request.getRequestDispatcher(access).forward(request, response);
+
+            }
+        
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
+    RequestDispatcher view = request.getRequestDispatcher(access);
+
+    view.forward (request, response);
+
+}
+
+/**
+ * Returns a short description of the servlet.
+ *
+ * @return a String containing servlet description
+ */
+@Override
+public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 
