@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-import com.pokemon.ec.db.Conexion;
+import com.pokedex.ec.db.Conexion;
 import java.sql.Connection;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author ichu_
  */
-public class NewEmptyJUnitTest {
+public class firstTest {
     @Test
     public void TestConnection() {
         Connection conn = Conexion.getConnection();

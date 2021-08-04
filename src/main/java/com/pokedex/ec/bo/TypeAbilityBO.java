@@ -7,9 +7,9 @@ package com.pokedex.ec.bo;
 
 import com.pokedex.ec.entity.Ability;
 import com.pokedex.ec.entity.Types;
-import com.pokemon.ec.dao.Methods;
-import com.pokemon.ec.dao.TypeAbilityDAO;
-import com.pokemon.ec.db.Conexion;
+import com.pokedex.ec.dao.Methods;
+import com.pokedex.ec.dao.TypeAbilityDAO;
+import com.pokedex.ec.db.Conexion;
 import java.sql.Connection;
 import javax.swing.JComboBox;
 import javax.swing.JList;

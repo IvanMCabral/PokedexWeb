@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.pokemon.ec.dao;
+package com.pokedex.ec.dao;
 
 import com.pokedex.ec.entity.Evolve;
 import java.sql.Connection;

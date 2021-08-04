@@ -1,5 +1,5 @@
 
-package com.pokemon.ec.db;
+package com.pokedex.ec.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

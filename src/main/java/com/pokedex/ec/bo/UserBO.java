@@ -5,8 +5,8 @@
  */
 package com.pokedex.ec.bo;
 
-import com.pokemon.ec.dao.UserDAO;
-import com.pokemon.ec.db.Conexion;
+import com.pokedex.ec.dao.UserDAO;
+import com.pokedex.ec.db.Conexion;
 import java.sql.Connection;
 import javax.swing.JComboBox;
 

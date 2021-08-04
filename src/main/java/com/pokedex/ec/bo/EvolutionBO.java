@@ -6,9 +6,9 @@
 package com.pokedex.ec.bo;
 
 import com.pokedex.ec.entity.Evolve;
-import com.pokemon.ec.dao.EvolveDAO;
-import com.pokemon.ec.dao.Methods;
-import com.pokemon.ec.db.Conexion;
+import com.pokedex.ec.dao.EvolveDAO;
+import com.pokedex.ec.dao.Methods;
+import com.pokedex.ec.db.Conexion;
 import java.sql.Connection;
 import javax.swing.JList;
 
