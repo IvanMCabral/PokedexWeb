@@ -5,7 +5,9 @@
  */
 package com.pokedex.ec.dao;
 
+import com.pokedex.ec.bo.PokemonBO;
 import com.pokedex.ec.entity.Pokemon;
+import com.pokedex.ec.entity.PokemonUser;
 import com.pokedex.ec.entity.Types;
 import com.pokedex.ec.entity.User;
 import java.sql.Connection;
@@ -17,8 +19,6 @@ import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -64,6 +64,31 @@ public class PokemonDAO {
             pst.setString(5, pok.getUser());
             pst.setInt(6, pok.getEvolution());
             message = "New Pokemon Inserted!!";
+
+            pst.execute();
+            pst.close();
+            con.commit();
+
+        } catch (SQLException e) {
+            message = "Error Save \n " + e.getMessage();
+        }
+
+        return message;
+    }
+
+    public String addPokemonxUser(Connection con, PokemonUser pok) {
+        PreparedStatement pst = null;
+        ResultSet rs;
+        //first I look for if it exists
+
+        //Pokemon insert
+        String sql = "INSERT INTO POKEMONXUSER (IDPOKEMON, IDUSER) VALUES( ?, ?)";
+        try {
+
+            pst = con.prepareStatement(sql);
+
+            pst.setInt(1, pok.getIdpokemon());
+            pst.setInt(2, pok.getIduser());
 
             pst.execute();
             pst.close();
@@ -163,6 +188,34 @@ public class PokemonDAO {
 
     }
 
+    public ArrayList<Pokemon> getPokemonUser(Connection con, int id) {
+        PreparedStatement st = null;
+        ResultSet rs;
+        PokemonBO pbo = new PokemonBO();
+        ArrayList<Pokemon> Pokemonlist = new ArrayList<>();
+
+        try {
+
+            String sql = "SELECT IDPOKEMON FROM POKEMONXUSER WHERE IDUSER = " + "'" + id + "'";
+            st = con.prepareStatement(sql);
+            rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                int idpokemon = rs.getInt("IDPOKEMON");
+                Pokemon p = pbo.loadPokemon(idpokemon);
+                Pokemonlist.add(p);
+
+            }
+
+        } catch (SQLException e) {
+
+            message = "ERROR SAVE \n " + e.getMessage();
+        }
+
+        return Pokemonlist;
+
+    }
+
     public Pokemon getPokemon(Connection con, int id) {
         Statement st;
         ResultSet rs;
@@ -177,6 +230,7 @@ public class PokemonDAO {
 
             while (rs.next()) {
 
+                pokemon.setIdpokemon(id);
                 pokemon.setName(rs.getString("NAME"));
                 pokemon.setType(rs.getString("TYPE"));
                 pokemon.setType2(rs.getString("TYPE2"));
@@ -363,6 +417,7 @@ public class PokemonDAO {
         String sql = "DELETE POKEMON, EVO FROM POKEMON JOIN EVO ON POKEMON.IDPOKEMON=EVO.IDPOKEMON WHERE POKEMON.IDPOKEMON = ? ";
         String searchEvo = "SELECT EVOLVESTO FROM EVO WHERE IDPOKEMON = ?";
         String DeleteOne = "DELETE FROM POKEMON WHERE IDPOKEMON = ?";
+        String deleteUserxPokemon = "DELETE FROM POKEMONXUSER WHERE IDPOKEMON = ?";
 
         //pre evolution update
         String searchPreevo = "SELECT IDPOKEMON FROM EVO WHERE EVOLVESTO = ?";
@@ -387,6 +442,11 @@ public class PokemonDAO {
                 st.execute();
                 con.commit();
 
+                st = con.prepareStatement(deleteUserxPokemon);
+                st.setInt(1, idpre);
+                st.execute();
+                con.commit();
+
             }
 
             //Delete evolutions      
@@ -404,10 +464,20 @@ public class PokemonDAO {
                     st.execute();
                     con.commit();
 
+                    st = con.prepareStatement(deleteUserxPokemon);
+                    st.setInt(1, id);
+                    st.execute();
+                    con.commit();
+
                     idpok = id;
 
                 } else {
                     st = con.prepareStatement(DeleteOne);
+                    st.setInt(1, id);
+                    st.execute();
+                    con.commit();
+
+                    st = con.prepareStatement(deleteUserxPokemon);
                     st.setInt(1, id);
                     st.execute();
                     con.commit();
@@ -451,30 +521,14 @@ public class PokemonDAO {
 
     }
 
-    public String listAbilities( int id) {
+    public String listAbilities(int id) {
 
         String name = "select name from ability where idpokemon =" + "'" + id + "'";
 
         return name;
     }
 
-    public void cmbPoke(Connection con, JComboBox cboxUser) {
 
-        String name = "name";
-        String from = "pokemon";
-
-        mdao.cmbPoke(con, cboxUser, name, from);
-
-    }
-
-    public void cmbLastEvo(Connection con, JComboBox cboxUser) {
-
-        String name = "name";
-        String from = "pokemon where evolution = 0 ";
-
-        mdao.cmbPoke(con, cboxUser, name, from);
-
-    }
 
     public ArrayList<Pokemon> getLastPokemon(Connection con) {
         PreparedStatement st = null;
@@ -527,10 +581,6 @@ public class PokemonDAO {
         return sql;
     }
 
-    public String listPoke(JList list) {
-
-        String name = "select name from pokemon ";
-        return name;
-    }
+    
 
 }

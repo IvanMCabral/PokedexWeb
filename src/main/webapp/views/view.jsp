@@ -29,15 +29,16 @@
                     <%
 
                         List<Pokemon> pokemonlist = pbo.loadPokemon();
-                                    if (pokemonlist != null) {
-                                        for (Pokemon pokemon : pokemonlist) {%>
+                        if (pokemonlist != null) {
+                            for (Pokemon pokemon : pokemonlist) {%>
                     <option  "><%=pokemon.getName()%></option>                        
                     <% }
-                                    }%>
+                        }%>
 
                 </select>
-
-                <input type="submit" name="action" value="Filter" class="form-control form-control btn btn-primary"><br>
+                <br><br>
+                <input type="submit" name="action" value="Filter" class="form-control form-control btn btn-primary"><br><br>
+                <input type="submit" name="action" value="Abilities" class="form-control form-control btn btn-primary"><br>
             </form>
 
 
@@ -47,7 +48,7 @@
         </div>
 
 
-        
+
     </body>
 
 

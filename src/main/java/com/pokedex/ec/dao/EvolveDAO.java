@@ -12,8 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 /**
@@ -56,6 +54,7 @@ public class EvolveDAO {
         return message;
     }
 
+    
     public int lastPoke(Connection con) {
 
         int id = 0;
@@ -83,11 +82,12 @@ public class EvolveDAO {
         return id;
     }
 
+    
     public List listEvos(Connection con, int id) {
         int id2 = 0;
 
         List lista = new ArrayList<>();
-        
+
         String sql = "SELECT EVOLVESTO FROM EVO WHERE IDPOKEMON = (?)";
         String sql1 = "SELECT LEVEL FROM EVO WHERE IDPOKEMON =(?)";
         String sql2 = "SELECT NAME FROM POKEMON WHERE IDPOKEMON =(?)";
@@ -106,7 +106,7 @@ public class EvolveDAO {
             }
 
             if (id2 > 0) {
-                
+
             } else {
                 id = id2;
             }
@@ -121,7 +121,7 @@ public class EvolveDAO {
 
                 if (rs.next()) {
                     m = rs.getString("LEVEL");
-                    
+
                 }
 
                 st = con.prepareStatement(sql);
@@ -145,13 +145,13 @@ public class EvolveDAO {
                 }
 
             }
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "ERROR LIST");
         }
 
         return lista;
-        
+
     }
 
 }

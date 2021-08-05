@@ -44,28 +44,6 @@ public class UserBO {
         return message;
     }
 
-    public void listUser(JComboBox cboxUser) {
-        Connection conn = Conexion.getConnection();
-
-        try {
-
-            udao.cmbUser(conn, cboxUser);
-
-        } catch (Exception e) {
-
-            message = message + " " + e.getMessage();
-        }//finally
-        finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-
-                }
-            } catch (Exception e) {
-                message = message + " " + e.getMessage();
-            }
-        }
-
-    }
+    
 
 }

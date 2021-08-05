@@ -9,6 +9,7 @@ import com.pokedex.ec.bo.EvolutionBO;
 import com.pokedex.ec.bo.PokemonBO;
 import com.pokedex.ec.entity.Evolve;
 import com.pokedex.ec.entity.Pokemon;
+import com.pokedex.ec.entity.PokemonUser;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -26,7 +27,7 @@ public class Controller extends HttpServlet {
 
     private EvolutionBO ebo = new EvolutionBO();
     private PokemonBO pbo = new PokemonBO();
-    String list = "views/list.jsp";
+    String list = "views/modify.jsp";
     String add = "views/add.jsp";
     String edit = "views/edit.jsp";
     String modify = "views/modify.jsp";
@@ -74,9 +75,13 @@ public class Controller extends HttpServlet {
 
         String access = "";
         String action = request.getParameter("action");
+        
         if (action.equalsIgnoreCase("add")) {
+            
             access = add;
+            
         } else if (action.equalsIgnoreCase("modify")) {
+            
             access = modify;
 
         } else if (action.equalsIgnoreCase("edit")) {
@@ -86,14 +91,15 @@ public class Controller extends HttpServlet {
             pokemon = pbo.loadPokemon(idPokemon);
             request.setAttribute("pokemonSelected", pokemon);
             access = modify;
+            
             request.getRequestDispatcher(access);
 
         } else if (action.equalsIgnoreCase("delete")) {
 
             idPokemon = Integer.parseInt(request.getParameter("id"));
             pbo.deletePokemon(idPokemon);
-
             access = modify;
+            
             request.getRequestDispatcher(access);
 
         }
@@ -131,13 +137,23 @@ public class Controller extends HttpServlet {
                     p.setLevel(Integer.parseInt(request.getParameter("level")));
                     String user = request.getParameter("user");
                     p.setUser(user);
+                    int iduser = pbo.serchaIdUser(user);
+
+                    PokemonUser pok = new PokemonUser();
+                    EvolutionBO evo = new EvolutionBO();
 
                     String message = pbo.addPokemon(p);
 
+                    int idpoke = evo.lastPoke();
+
                     if (message == "New Pokemon Inserted!!") {
                         access = list;
+                        pok.setIdpokemon(idpoke);
+                        pok.setIduser(iduser);
+                        pbo.addPokemonUser(pok);
                     }
                     break;
+                    
                 case "Modify Pokemon":
                     p = new Pokemon();
 
@@ -166,9 +182,21 @@ public class Controller extends HttpServlet {
                     p.setLevel(Integer.parseInt(request.getParameter("level")));
                     user = request.getParameter("user");
                     p.setUser(user);
+                    
+                    iduser = pbo.serchaIdUser(user);
+
+                    pok = new PokemonUser();
+                    evo = new EvolutionBO();
+                    
 
                     message = pbo.addPokemon(p);
-
+                    if (message == "New Pokemon Inserted!!") {
+                    idpoke = evo.lastPoke();
+                    pok.setIdpokemon(idpoke);
+                    pok.setIduser(iduser);
+                    pbo.addPokemonUser(pok);
+                    
+                    
                     String Poke = (String) request.getParameter("pokeevo");
                     int pokeev = pbo.serchaId(Poke);
                     int pokeevo = ebo.lastPoke();
@@ -180,8 +208,10 @@ public class Controller extends HttpServlet {
 
                     ebo.addEvoTable(ev);
 
-                    if (message == "New Pokemon Inserted!!") {
+                    
                         access = list;
+                        
+                        
                     }
                     break;
 

@@ -21,61 +21,61 @@
         <% PokemonBO pbo = new PokemonBO(); %>
         <div>
             <h1 class="col-auto text-light bg-dark p-5 text-center"> Add Pokemon Evolution</h1>
-           
+
             <form action="Controller?menu=pokemon" method="post">
                 <div class="form-group  p-5 text-center col-auto  " >
-                    
-                     <select name="pokeevo" class="form-control form-control">
-                                    
-                                <%
 
-                                    List<Pokemon> pokemonlist = pbo.loadLastPokemon();
-                                if (pokemonlist != null) {
-                                    for (Pokemon pokemon : pokemonlist) {%>
-                                <option  "><%=pokemon.getName()%></option>                        
-                                <% }
-                            }%>
+                    <select name="pokeevo" class="form-control form-control">
 
-                            </select>
-                    
-                    
+                        <%
+
+                            List<Pokemon> pokemonlist = pbo.loadLastPokemon();
+                                    if (pokemonlist != null) {
+                                        for (Pokemon pokemon : pokemonlist) {%>
+                        <option  "><%=pokemon.getName()%></option>                        
+                        <% }
+                                    }%>
+
+                    </select>
+
+
                     NAME:<br>
                     <input type="text" name="name" class="form-control form-control"><br>
                     TYPE:<br>
                     <select name="type" class="form-control form-control" >
-                            <%
-                                
-                                List<Types> listTypes = pbo.loadTypes();
-                        if (listTypes != null) {
-                            for (Types type : listTypes) {%>
-                            <option  value="<%=type.getName()%>"><%=type.getName()%></option>                        
+                        <%
+
+                            List<Types> listTypes = pbo.loadTypes();
+                                if (listTypes != null) {
+                                    for (Types type : listTypes) {%>
+                        <option  value="<%=type.getName()%>"><%=type.getName()%></option>                        
                         <% }
-                        } %>
+                            } %>
 
                     </select><br>
 
                     TYPE2:<br>               
                     <select name="type2" class="form-control form-control text-center">
-                            <%
-                        if (listTypes != null) {
-                            for (Types type : listTypes) {%>
-                            <option  value="<%=type.getName()%>"><%=type.getName()%></option>                        
+                        <%
+                                if (listTypes != null) {
+                                    for (Types type : listTypes) {%>
+                        <option  value="<%=type.getName()%>"><%=type.getName()%></option>                        
                         <% }
-                        } %>
+                            } %>
 
                     </select><br>
                     LEVEL:<br>
                     <input type="text" name="level" class="form-control form-control"><br>
                     USER:<br>
                     <select name="user" class="form-control form-control">
-                            <%
-                            List<User> listUser = pbo.loadUser();
-                                
-                        if (listUser != null) {
-                            for (User user : listUser) {%>
-                            <option  value="<%=user.getName()%>"><%=user.getName()%></option>                        
+                        <%
+                                List<User> listUser = pbo.loadUser();
+
+                                if (listUser != null) {
+                                    for (User user : listUser) {%>
+                        <option  value="<%=user.getName()%>"><%=user.getName()%></option>                        
                         <% }
-                        }%>
+                            }%>
 
                     </select><br>
 

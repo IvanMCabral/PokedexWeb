@@ -28,13 +28,5 @@ public class UserDAO {
 
     }
     
-    public void cmbUser( Connection con,JComboBox cboxUser){
-        String name = "name";
-        String from = "user";
-        
-        mdao.cmbPoke(con,cboxUser, name, from);
-        
-    }
-    
     
 }

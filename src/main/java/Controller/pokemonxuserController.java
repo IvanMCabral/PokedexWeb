@@ -6,6 +6,8 @@
 package Controller;
 
 import com.pokedex.ec.bo.PokemonBO;
+import com.pokedex.ec.bo.TypeAbilityBO;
+import com.pokedex.ec.entity.PokemonUser;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -19,8 +21,10 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ichu_
  */
-public class listController extends HttpServlet {
-    String list = "views/list.jsp";
+public class pokemonxuserController extends HttpServlet {
+
+    String vista = "views/pokemonxUser.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,10 +42,10 @@ public class listController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet listController</title>");            
+            out.println("<title>Servlet typesAbController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet listController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet typesAbController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,7 +63,6 @@ public class listController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
         String menu = request.getParameter("menu");
         String access = "";
         String action = request.getParameter("action");
@@ -67,18 +70,18 @@ public class listController extends HttpServlet {
         if (menu.equals("pokemon")) {
             switch (action) {
                 case "list":
-                   
-                    PokemonBO pbo = new PokemonBO();
-                    List lista = pbo.loadPokemon();
-                    request.setAttribute("listPokemon", lista);
-                    access = list;
-            
+
+                    TypeAbilityBO tabo = new TypeAbilityBO();
+                    List listaAbilities = tabo.listAbilities();
+                    request.setAttribute("listAbility", listaAbilities);
+                    access = vista;
+                    break;
             }
-            
+
         }
         request.getRequestDispatcher(access).forward(request, response);
-        
     }
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -96,28 +99,34 @@ public class listController extends HttpServlet {
 
         if (menu.equals("pokemon")) {
             switch (action) {
-                case "Filter":
-                    
-                    //consigo el dato del usuario a filtrar
-                    String userfilter = (String)request.getParameter("userfiltro");
-                    PokemonBO pbo = new PokemonBO();
-                    // busco la id del usuario y busco los pokemones que tiene
-                    int iduser = pbo.serchaIdUser(userfilter);
-                    List lista = pbo.PokemonxUser(iduser);
-                    
-                    request.setAttribute("listPokemon", lista);
-                    access = list;
-                    break;
-                    
-            }
-        
-        
-        }
-        
-        RequestDispatcher view = request.getRequestDispatcher(access);
-         view.forward (request, response);
+                case "Add":
 
-        
+                    //busco los parametros de pokemon y usuario y los agrego
+                    String poke = request.getParameter("pokeSelect");
+                    String user = request.getParameter("userSelect");
+                    PokemonBO pbo = new PokemonBO();
+                    int id = pbo.serchaId(poke);
+                    int iduser = pbo.serchaIdUser(user);
+                    PokemonUser pxu = new PokemonUser();
+                    pxu.setIdpokemon(id);
+                    pxu.setIduser(iduser);
+
+                    pbo.addPokemonUser(pxu);
+
+                    access = vista;
+                    break;
+
+                case "Return":
+
+                    access = "/";
+                    break;
+
+            }
+
+        }
+
+        RequestDispatcher view = request.getRequestDispatcher(access);
+        view.forward(request, response);
     }
 
     /**

@@ -24,25 +24,20 @@ public class TypeAbilityDAO {
     private Methods mdao = new Methods();
     private String message = "";
 
-    public void cmbType(Connection conn, JComboBox cboxUser) {
-        String name = "NAME";
-        String from = "TYPE";
-
-        mdao.cmbPoke(conn, cboxUser, name, from);
-    }
-
-    public void listAbilities(Connection conn) {
+    
+    public String listAbilities() {
 
         String name = "SELECT NAME FROM ABILITY ";
 
-        mdao.list(conn,  name);
+        return name;
     }
 
-    public void listAbilitiesNeg(Connection conn,JList list, int id) {
+    public String listAbilitiesNeg( int id) {
 
         String name = "SELECT DISTINCT NAME FROM ABILITY WHERE NAME NOT IN (SELECT NAME FROM ABILITY WHERE IDPOKEMON = '" + id + "')";
-                              
-        mdao.list(conn, name);
+        
+        return name;                  
+        
     }
 
     public void listTypes(Connection conn,JList list) {

@@ -7,6 +7,8 @@ package Controller;
 
 import com.pokedex.ec.bo.EvolutionBO;
 import com.pokedex.ec.bo.PokemonBO;
+import com.pokedex.ec.bo.TypeAbilityBO;
+import com.pokedex.ec.entity.Ability;
 import com.pokedex.ec.entity.Pokemon;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,8 +24,11 @@ import javax.servlet.http.HttpServletResponse;
  * @author ichu_
  */
 public class viewController extends HttpServlet {
+
     String view = "views/view.jsp";
     String data = "views/pokemonDataEvos.jsp";
+    String ability = "views/ability.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,7 +46,7 @@ public class viewController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet viewController</title>");            
+            out.println("<title>Servlet viewController</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet viewController at " + request.getContextPath() + "</h1>");
@@ -69,15 +74,74 @@ public class viewController extends HttpServlet {
         if (menu.equals("pokemon")) {
             switch (action) {
                 case "list":
-                   
+
                     PokemonBO pbo = new PokemonBO();
                     List lista = pbo.loadPokemon();
+
                     request.setAttribute("listPokemon", lista);
                     access = view;
-            
+                    break;
+                case "Delete":
+                    String nameAbility = request.getParameter("nameAbility");
+                    String poke = request.getParameter("poke");
+
+                    TypeAbilityBO tabo = new TypeAbilityBO();
+                    pbo = new PokemonBO();
+                    Ability abilitye = new Ability();
+                    abilitye.setName(nameAbility);
+
+                    int id = pbo.serchaId(poke);
+                    abilitye.setIdpokemon(id);
+
+                    tabo.deleteAbilityP(abilitye);
+
+                    //busco pokemon seleccionado
+                    Pokemon pokemon = pbo.loadPokemon(id);
+                    request.setAttribute("pokemonSelected", pokemon);
+                    //busco habilidades y las listo
+                    List listaAbilities = pbo.listAbilities(id);
+                    request.setAttribute("listAbility", listaAbilities);
+                    //busco habilidades que no tenga
+                    tabo = new TypeAbilityBO();
+                    List listaAbilitiesNeg = tabo.listAbilitiesNeg(id);
+                    request.setAttribute("listAbilityNeg", listaAbilitiesNeg);
+
+                    access = ability;
+                    break;
+
+                case "Add":
+                    //busco nombre de pokemon y la habilidad a subir
+                    nameAbility = request.getParameter("nameAbility");
+                    poke = request.getParameter("poke");
+
+                    tabo = new TypeAbilityBO();
+                    pbo = new PokemonBO();
+                    abilitye = new Ability();
+                    abilitye.setName(nameAbility);
+
+                    id = pbo.serchaId(poke);
+                    abilitye.setIdpokemon(id);
+                    //agrego la habilidad
+                    tabo.addAbilityP(abilitye);
+
+                    //busco pokemon seleccionado
+                    pokemon = pbo.loadPokemon(id);
+                    request.setAttribute("pokemonSelected", pokemon);
+                    //busco habilidades y las listo
+                    listaAbilities = pbo.listAbilities(id);
+                    request.setAttribute("listAbility", listaAbilities);
+                    //busco habilidades que no tenga
+                    tabo = new TypeAbilityBO();
+                    listaAbilitiesNeg = tabo.listAbilitiesNeg(id);
+                    request.setAttribute("listAbilityNeg", listaAbilitiesNeg);
+
+                    access = ability;
+                    break;
+
             }
-            
+
         }
+
         request.getRequestDispatcher(access).forward(request, response);
     }
 
@@ -99,7 +163,7 @@ public class viewController extends HttpServlet {
         if (menu.equals("pokemon")) {
             switch (action) {
                 case "Filter":
-                    String pokefilter = (String)request.getParameter("pokeSelect");
+                    String pokefilter = (String) request.getParameter("pokeSelect");
                     PokemonBO pbo = new PokemonBO();
                     EvolutionBO ebo = new EvolutionBO();
                     //busco pokemon seleccionado
@@ -115,18 +179,33 @@ public class viewController extends HttpServlet {
                     //busco level de evoluciones y los listo
                     List listaEvolves = ebo.listEvos(idpokemon);
                     request.setAttribute("listEvo", listaEvolves);
-                    
-                    
+
                     access = data;
                     break;
-                    
+                case "Abilities":
+                    pbo = new PokemonBO();
+                    pokefilter = (String) request.getParameter("pokeSelect");
+                    //busco pokemon seleccionado
+                    idpokemon = pbo.serchaId(pokefilter);
+                    pokemon = pbo.loadPokemon(idpokemon);
+                    request.setAttribute("pokemonSelected", pokemon);
+                    //busco habilidades y las listo
+                    listaAbilities = pbo.listAbilities(idpokemon);
+                    request.setAttribute("listAbility", listaAbilities);
+                    //busco habilidades que no tenga
+                    TypeAbilityBO tabo = new TypeAbilityBO();
+                    List listaAbilitiesNeg = tabo.listAbilitiesNeg(idpokemon);
+                    request.setAttribute("listAbilityNeg", listaAbilitiesNeg);
+
+                    access = ability;
+                    break;
+
             }
-        
-        
+
         }
-        
+
         RequestDispatcher view = request.getRequestDispatcher(access);
-         view.forward (request, response);
+        view.forward(request, response);
     }
 
     /**

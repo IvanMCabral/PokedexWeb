@@ -11,6 +11,8 @@ import com.pokedex.ec.dao.Methods;
 import com.pokedex.ec.dao.TypeAbilityDAO;
 import com.pokedex.ec.db.Conexion;
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 
@@ -24,12 +26,16 @@ public class TypeAbilityBO {
     private TypeAbilityDAO tadao = new TypeAbilityDAO();
     private Methods mdao = new Methods();
 
-    public void cmbType(JComboBox cboxUser) {
+    
+
+    public List listAbilities() {
         Connection conn = Conexion.getConnection();
-
+        String name = tadao.listAbilities();
+        List abilitylist = new ArrayList<>();
+        
         try {
-
-            tadao.cmbType(conn, cboxUser);
+            abilitylist= mdao.list(conn,  name);
+            
 
         } catch (Exception e) {
 
@@ -45,15 +51,17 @@ public class TypeAbilityBO {
                 message = message + " " + e.getMessage();
             }
         }
-
+        return abilitylist;
     }
 
-    public void listAbilities() {
+    public List listAbilitiesNeg(int id) {
         Connection conn = Conexion.getConnection();
-
+        List abilityNeglist = new ArrayList<>();
+        
+        String name = tadao.listAbilitiesNeg(id);
         try {
-
-            tadao.listAbilities(conn);
+            abilityNeglist = mdao.list(conn, name);
+            
 
         } catch (Exception e) {
 
@@ -69,31 +77,7 @@ public class TypeAbilityBO {
                 message = message + " " + e.getMessage();
             }
         }
-
-    }
-
-    public void listAbilitiesNeg(JList list, int id) {
-        Connection conn = Conexion.getConnection();
-
-        try {
-
-            tadao.listAbilitiesNeg(conn, list, id);
-
-        } catch (Exception e) {
-
-            message = message + " " + e.getMessage();
-        }//finally
-        finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-
-                }
-            } catch (Exception e) {
-                message = message + " " + e.getMessage();
-            }
-        }
-
+        return abilityNeglist;
     }
 
     public void listTypes(JList list) {

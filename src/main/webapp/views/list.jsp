@@ -33,7 +33,7 @@
                         <th  scope="col">Type2</th>
                         <th  scope="col">Level</th>
                         <th  scope="col">Evolution</th>
-                        <th scope="col">User</th>
+                        <th scope="col">User who registered first</th>
                     </tr>
                 </thead>
 

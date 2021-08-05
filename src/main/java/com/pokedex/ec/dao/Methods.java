@@ -5,7 +5,6 @@
  */
 package com.pokedex.ec.dao;
 
-import com.pokedex.ec.entity.Ability;
 import com.pokedex.ec.entity.Pokemon;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,23 +13,19 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author 
+ * @author
  */
 public class Methods {
 
     private String message = "";
 
     public ArrayList<Pokemon> listPokemon(Connection con, String string) {
-  
+
         String sql = string;
 
         PreparedStatement st = null;
@@ -39,9 +34,7 @@ public class Methods {
         ArrayList<Pokemon> Pokemonlist = new ArrayList<>();
 
         try {
-            
-            
-            
+
             st = con.prepareStatement(sql);
             rs = st.executeQuery(sql);
 
@@ -50,12 +43,12 @@ public class Methods {
                 pokemon.setIdpokemon(rs.getInt("IDPOKEMON"));
                 pokemon.setName(rs.getString("NAME"));
                 pokemon.setType(rs.getString("TYPE"));
-                if(rs.getString("TYPE2") == null){
-                pokemon.setType2("does not have");
-                }else{
-                pokemon.setType2(rs.getString("TYPE2"));
+                if (rs.getString("TYPE2") == null) {
+                    pokemon.setType2("does not have");
+                } else {
+                    pokemon.setType2(rs.getString("TYPE2"));
                 }
- 
+
                 pokemon.setLevel(rs.getInt("LEVEL"));
                 pokemon.setEvolution(rs.getInt("EVOLUTION"));
                 pokemon.setUser(rs.getString("USER"));
@@ -107,31 +100,45 @@ public class Methods {
 
     }
 
-    public void cmbPoke(Connection con, JComboBox cboxUser, String name, String from) {
+    public int searchuserbyname(Connection con, String username) {
+        int idpokemon = 0;
         PreparedStatement pst = null;
         ResultSet result = null;
-        String sql = "SELECT " + name + " FROM " + from;
+
+        String sql = "SELECT IDUSER FROM USER WHERE NAME=" + "'" + username + "' ";
 
         try {
 
             pst = con.prepareStatement(sql);
             result = pst.executeQuery();
 
-            cboxUser.addItem("Select An Option");
+            if (result.next()) {
 
-            while (result.next()) {
-
-                cboxUser.addItem(result.getString(name));
+                idpokemon = result.getInt("IDUSER");
             }
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
 
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException ex) {
+
+                    JOptionPane.showMessageDialog(null, ex);
+
+                }
+            }
         }
+
+        return idpokemon;
 
     }
 
-    public List list(Connection con,  String name) {
+    
+
+    public List list(Connection con, String name) {
         List lista = new ArrayList<>();
         int id = 0;
 
@@ -146,18 +153,16 @@ public class Methods {
 
             while (rs.next()) {
                 id = 1;
-                
-                String item =(rs.getString("NAME"));
+
+                String item = (rs.getString("NAME"));
                 lista.add(item);
 
             }
 
-            
-
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "ERROR LIST ");
         }
-        
+
         return lista;
 
     }

@@ -50,11 +50,11 @@
                                     <%
 
                                         List<Types> listTypes = pbo.loadTypes();
-                                    if (listTypes != null) {
-                                        for (Types type : listTypes) {%>
+                                        if (listTypes != null) {
+                                            for (Types type : listTypes) {%>
                                     <option><%=type.getName()%></option>                        
                                     <% }
-                                    } %>
+                                        } %>
                                 </select>
 
                             </div>
@@ -63,11 +63,11 @@
                                 <select name="type2" class="form-control form-control text-center">
                                     <option>${pokemonSelected.getType2()}</option>
                                     <%
-                                    if (listTypes != null) {
-                                        for (Types type : listTypes) {%>
+                                        if (listTypes != null) {
+                                            for (Types type : listTypes) {%>
                                     <option  value="<%=type.getName()%>"><%=type.getName()%></option>                        
                                     <% }
-                                    } %>
+                                        } %>
                                 </select>
 
                             </div>
@@ -83,11 +83,11 @@
                                     <%
 
                                         List<User> listUser = pbo.loadUser();
-                                    if (listUser != null) {
-                                        for (User user : listUser) {%>
+                                        if (listUser != null) {
+                                            for (User user : listUser) {%>
                                     <option  "><%=user.getName()%></option>                        
                                     <% }
-                                    }%>
+                                        }%>
 
                                 </select>
                             </div>

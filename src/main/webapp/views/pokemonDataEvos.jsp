@@ -92,64 +92,64 @@
         </div>
         <h1 class="col-auto text-light bg-dark p-2 text-center">Abilities and Evolves</h1>
         <div>
-        <div class="row">
-            <div class="card col-md-4">
-                <div class="card-body">
-                    <h5 class="card-title">Pokemon</h5>
-                    <table border="1" class="table table-striped">
-                        <thead >
-                            <tr> 
+            <div class="row">
+                <div class="card col-md-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Pokemon</h5>
+                        <table border="1" class="table table-striped">
+                            <thead >
+                                <tr> 
 
-                                <th  scope="col">Name</th>
-
-                            </tr>
-                        </thead>
-
-
-                        <tbody>
-                            <c:forEach var="poke" items="${listAbility}">
-                                <tr>
-
-                                    <td>${poke}</td>
+                                    <th  scope="col">Name</th>
 
                                 </tr>
-                            </c:forEach>
+                            </thead>
 
 
-                        </tbody>
-                    </table>
+                            <tbody>
+                                <c:forEach var="poke" items="${listAbility}">
+                                    <tr>
+
+                                        <td>${poke}</td>
+
+                                    </tr>
+                                </c:forEach>
+
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
 
 
-            <div class="card col-md-6">
-                <div class="card-body">
-                    <h5 class="card-title">Pokemon</h5>
-                    <table border="1" class="table table-striped">
-                        <thead >
-                            <tr> 
+                <div class="card col-md-6">
+                    <div class="card-body">
+                        <h5 class="card-title">Pokemon</h5>
+                        <table border="1" class="table table-striped">
+                            <thead >
+                                <tr> 
 
-                                <th  scope="col">Name</th>
-
-                            </tr>
-                        </thead>
-
-
-                        <tbody>
-                            <c:forEach var="evo" items="${listEvo}">
-                                <tr>
-
-                                    <td>${evo}</td>
+                                    <th  scope="col">Name</th>
 
                                 </tr>
-                            </c:forEach>
+                            </thead>
 
 
-                        </tbody>
-                    </table>
+                            <tbody>
+                                <c:forEach var="evo" items="${listEvo}">
+                                    <tr>
+
+                                        <td>${evo}</td>
+
+                                    </tr>
+                                </c:forEach>
+
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-            </div>
     </body>
 </html>

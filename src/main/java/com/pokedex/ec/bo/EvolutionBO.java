@@ -12,7 +12,6 @@ import com.pokedex.ec.db.Conexion;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JList;
 
 /**
  *
@@ -46,7 +45,6 @@ public class EvolutionBO {
         return message;
     }
 
-    
     public int lastPoke() {
         int poke = 0;
         Connection conn = Conexion.getConnection();
@@ -70,7 +68,7 @@ public class EvolutionBO {
         return poke;
     }
 
-    public List listEvos( int id) {
+    public List listEvos(int id) {
         Connection conn = Conexion.getConnection();
         List evolist = new ArrayList<>();
         try {
