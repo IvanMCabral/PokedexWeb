@@ -3,6 +3,7 @@
    
 --%>
 
+<%@page import="com.pokedex.ec.entity.Pokemon"%>
 <%@page import="com.pokedex.ec.entity.User"%>
 <%@page import="java.util.List"%>
 <%@page import="com.pokedex.ec.entity.Types"%>
@@ -17,17 +18,33 @@
         <title>Add jsp Page</title>
     </head>
     <body>
+        <% PokemonBO pbo = new PokemonBO(); %>
         <div>
-            <h1 class="col-auto text-light bg-dark p-5 text-center"> Add Pokemon </h1>
+            <h1 class="col-auto text-light bg-dark p-5 text-center"> Add Pokemon Evolution</h1>
            
-            <form action="Controller">
+            <form action="Controller?menu=pokemon" method="post">
                 <div class="form-group  p-5 text-center col-auto  " >
+                    
+                     <select name="pokeevo" class="form-control form-control">
+                                    
+                                <%
+
+                                    List<Pokemon> pokemonlist = pbo.loadLastPokemon();
+                                if (pokemonlist != null) {
+                                    for (Pokemon pokemon : pokemonlist) {%>
+                                <option  "><%=pokemon.getName()%></option>                        
+                                <% }
+                            }%>
+
+                            </select>
+                    
+                    
                     NAME:<br>
                     <input type="text" name="name" class="form-control form-control"><br>
                     TYPE:<br>
                     <select name="type" class="form-control form-control" >
                             <%
-                                PokemonBO pbo = new PokemonBO();
+                                
                                 List<Types> listTypes = pbo.loadTypes();
                         if (listTypes != null) {
                             for (Types type : listTypes) {%>
@@ -52,8 +69,8 @@
                     USER:<br>
                     <select name="user" class="form-control form-control">
                             <%
-
-                                List<User> listUser = pbo.loadUser();
+                            List<User> listUser = pbo.loadUser();
+                                
                         if (listUser != null) {
                             for (User user : listUser) {%>
                             <option  value="<%=user.getName()%>"><%=user.getName()%></option>                        
@@ -62,7 +79,7 @@
 
                     </select><br>
 
-                    <input type="submit" name="action" value="Add Pokemon" class="form-control form-control btn btn-primary"><br>
+                    <input type="submit" name="action" value="Add Evolution" class="form-control form-control btn btn-primary"><br>
                 </div>
             </form>
 

@@ -131,8 +131,7 @@ public class PokemonDAO {
         ArrayList<Pokemon> Pokemonlist = new ArrayList<>();
 
         try {
-            
-            
+
             String sql = "SELECT * FROM POKEMON ";
             st = con.prepareStatement(sql);
             rs = st.executeQuery(sql);
@@ -142,12 +141,12 @@ public class PokemonDAO {
                 pokemon.setIdpokemon(rs.getInt("IDPOKEMON"));
                 pokemon.setName(rs.getString("NAME"));
                 pokemon.setType(rs.getString("TYPE"));
-                if(rs.getString("TYPE2") == null){
-                pokemon.setType2("does not have");
-                }else{
-                pokemon.setType2(rs.getString("TYPE2"));
+                if (rs.getString("TYPE2") == null) {
+                    pokemon.setType2("does not have");
+                } else {
+                    pokemon.setType2(rs.getString("TYPE2"));
                 }
- 
+
                 pokemon.setLevel(rs.getInt("LEVEL"));
                 pokemon.setEvolution(rs.getInt("EVOLUTION"));
                 pokemon.setUser(rs.getString("USER"));
@@ -163,7 +162,7 @@ public class PokemonDAO {
         return Pokemonlist;
 
     }
-    
+
     public Pokemon getPokemon(Connection con, int id) {
         Statement st;
         ResultSet rs;
@@ -177,14 +176,13 @@ public class PokemonDAO {
             rs = st.executeQuery(sql);
 
             while (rs.next()) {
-                
+
                 pokemon.setName(rs.getString("NAME"));
                 pokemon.setType(rs.getString("TYPE"));
                 pokemon.setType2(rs.getString("TYPE2"));
                 pokemon.setLevel(rs.getInt("LEVEL"));
                 pokemon.setEvolution(rs.getInt("EVOLUTION"));
                 pokemon.setUser(rs.getString("USER"));
-                
 
             }
 
@@ -196,7 +194,6 @@ public class PokemonDAO {
         return pokemon;
 
     }
-    
 
     public ArrayList<Types> getTypes(Connection con) {
         PreparedStatement st = null;
@@ -205,17 +202,16 @@ public class PokemonDAO {
         ArrayList<Types> Typeslist = new ArrayList<>();
 
         try {
-            
-            
+
             String sql = "SELECT * FROM TYPE ";
             st = con.prepareStatement(sql);
             rs = st.executeQuery(sql);
 
             while (rs.next()) {
                 Types types = new Types();
-                
+
                 types.setName(rs.getString("NAME"));
-                
+
                 Typeslist.add(types);
 
             }
@@ -228,8 +224,7 @@ public class PokemonDAO {
         return Typeslist;
 
     }
-    
-    
+
     public ArrayList<User> getUser(Connection con) {
         PreparedStatement st = null;
         ResultSet rs;
@@ -237,17 +232,16 @@ public class PokemonDAO {
         ArrayList<User> Userlist = new ArrayList<>();
 
         try {
-            
-            
+
             String sql = "SELECT * FROM USER ";
             st = con.prepareStatement(sql);
             rs = st.executeQuery(sql);
 
             while (rs.next()) {
-                User User  = new User();
-                
+                User User = new User();
+
                 User.setName(rs.getString("NAME"));
-                
+
                 Userlist.add(User);
 
             }
@@ -260,17 +254,12 @@ public class PokemonDAO {
         return Userlist;
 
     }
-    
-    
-    
-    public void tablePokemonEvo(Connection con, JTable table, int id) {
 
-        DefaultTableModel model;
-        String[] columns = {"ID", "NAME", "TYPE1", "TYPE2", "CURRENT LEVEL"};
-        model = new DefaultTableModel(null, columns);
+    public ArrayList<Pokemon> ListEvolves(Connection con, int id) {
+
+        ArrayList<Pokemon> Pokemonlist = new ArrayList<>();
+
         int id2 = 1;
-
-        String[] filas = new String[6];
 
         String sql = "SELECT IDPOKEMON FROM EVO WHERE EVOLVESTO = (?)";
         String sql1 = "SELECT * FROM POKEMON WHERE IDPOKEMON =(?)";
@@ -301,10 +290,21 @@ public class PokemonDAO {
 
             while (rs.next()) {
 
-                for (int i = 0; i < 5; i++) {
-                    filas[i] = rs.getString(i + 1);
+                Pokemon pokemon = new Pokemon();
+
+                pokemon.setIdpokemon(rs.getInt("IDPOKEMON"));
+                pokemon.setName(rs.getString("NAME"));
+                pokemon.setType(rs.getString("TYPE"));
+                if (rs.getString("TYPE2") == null) {
+                    pokemon.setType2("does not have");
+                } else {
+                    pokemon.setType2(rs.getString("TYPE2"));
                 }
-                model.addRow(filas);
+
+                pokemon.setLevel(rs.getInt("LEVEL"));
+                pokemon.setEvolution(rs.getInt("EVOLUTION"));
+                pokemon.setUser(rs.getString("USER"));
+                Pokemonlist.add(pokemon);
             }
 
             //search full evolution
@@ -326,20 +326,31 @@ public class PokemonDAO {
                 rs = st.executeQuery();
 
                 while (rs.next()) {
-                    for (int i = 0; i < 5; i++) {
-                        filas[i] = rs.getString(i + 1);
+                    Pokemon pokemon = new Pokemon();
+
+                    pokemon.setIdpokemon(rs.getInt("IDPOKEMON"));
+                    pokemon.setName(rs.getString("NAME"));
+                    pokemon.setType(rs.getString("TYPE"));
+                    if (rs.getString("TYPE2") == null) {
+                        pokemon.setType2("does not have");
+                    } else {
+                        pokemon.setType2(rs.getString("TYPE2"));
                     }
 
-                    model.addRow(filas);
+                    pokemon.setLevel(rs.getInt("LEVEL"));
+                    pokemon.setEvolution(rs.getInt("EVOLUTION"));
+                    pokemon.setUser(rs.getString("USER"));
+                    Pokemonlist.add(pokemon);
                 }
 
             }
-            table.setModel(model);
 
         } catch (Exception e) {
 
             JOptionPane.showMessageDialog(null, "ERROR LIST TABLE");
         }
+
+        return Pokemonlist;
     }
 
     public void deletePokemon(Connection con, int id) {
@@ -440,7 +451,7 @@ public class PokemonDAO {
 
     }
 
-    public String listAbilities(JList list, int id) {
+    public String listAbilities( int id) {
 
         String name = "select name from ability where idpokemon =" + "'" + id + "'";
 
@@ -462,6 +473,45 @@ public class PokemonDAO {
         String from = "pokemon where evolution = 0 ";
 
         mdao.cmbPoke(con, cboxUser, name, from);
+
+    }
+
+    public ArrayList<Pokemon> getLastPokemon(Connection con) {
+        PreparedStatement st = null;
+        ResultSet rs;
+
+        ArrayList<Pokemon> Pokemonlist = new ArrayList<>();
+
+        try {
+
+            String sql = "SELECT * FROM POKEMON where evolution = 0 ";
+            st = con.prepareStatement(sql);
+            rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                Pokemon pokemon = new Pokemon();
+                pokemon.setIdpokemon(rs.getInt("IDPOKEMON"));
+                pokemon.setName(rs.getString("NAME"));
+                pokemon.setType(rs.getString("TYPE"));
+                if (rs.getString("TYPE2") == null) {
+                    pokemon.setType2("does not have");
+                } else {
+                    pokemon.setType2(rs.getString("TYPE2"));
+                }
+
+                pokemon.setLevel(rs.getInt("LEVEL"));
+                pokemon.setEvolution(rs.getInt("EVOLUTION"));
+                pokemon.setUser(rs.getString("USER"));
+                Pokemonlist.add(pokemon);
+
+            }
+
+        } catch (SQLException e) {
+
+            message = "ERROR SAVE \n " + e.getMessage();
+        }
+
+        return Pokemonlist;
 
     }
 

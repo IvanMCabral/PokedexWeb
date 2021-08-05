@@ -48,12 +48,12 @@ public class TypeAbilityBO {
 
     }
 
-    public void listAbilities(JList list) {
+    public void listAbilities() {
         Connection conn = Conexion.getConnection();
 
         try {
 
-            tadao.listAbilities(conn, list);
+            tadao.listAbilities(conn);
 
         } catch (Exception e) {
 

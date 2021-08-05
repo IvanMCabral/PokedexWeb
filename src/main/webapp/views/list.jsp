@@ -3,10 +3,14 @@
     
 --%>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<%@page import="com.pokedex.ec.entity.User"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="com.pokedex.ec.bo.PokemonBO"%>
 <%@page import="com.pokedex.ec.entity.Pokemon"%>
 <%@page import="java.util.List"%>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -32,34 +36,40 @@
                         <th scope="col">User</th>
                     </tr>
                 </thead>
-                <%
-                    PokemonBO pbo = new PokemonBO();
-                    List<Pokemon> list = pbo.loadPokemon();
-                    Iterator<Pokemon> iter = list.iterator();
-                    Pokemon poke = null;
 
-                    while (iter.hasNext()) {
-                        poke = iter.next();
-
-                %>
 
                 <tbody>
-                    <tr>
-                        <td><%= poke.getIdpokemon()%> </td>
-                        <td><%= poke.getName()%></td>
-                        <td><%= poke.getType()%></td>
-                        <td><%= poke.getType2()%></td>
-                        <td><%= poke.getLevel()%></td>
-                        <td><%= poke.getEvolution()%></td>
-                        <td><%= poke.getUser()%></td>
-                    </tr>
+                    <c:forEach var="poke" items="${listPokemon}">
+                        <tr>
+                            <td>${poke.getIdpokemon()} </td>
+                            <td>${poke.getName()}</td>
+                            <td>${poke.getType()}</td>
+                            <td>${poke.getType2()}</td>
+                            <td>${poke.getLevel()}</td>
+                            <td>${poke.getEvolution()}</td>
+                            <td>${poke.getUser()}</td>
+                        </tr>
+                    </c:forEach>
 
-                    <% }%>
 
                 </tbody>
             </table>
+            <form action="listController?menu=pokemon" method="post">
+                <select name="userfiltro" class="form-control form-control"  >
+                    <%PokemonBO pbo = new PokemonBO();
+                                List<User> listUser = pbo.loadUser();
+                                if (listUser != null) {
+                                    for (User user : listUser) {%>
+                    <option  value="<%=user.getName()%>"><%=user.getName()%></option>                        
+                    <% }
+                            }%><br>
 
+                    <input type="submit" name="action" value="Filter" class="form-control form-control btn btn-primary"><br>
+                    <input type="submit" name="action" value="list" class="form-control form-control btn btn-primary"><br>
+                    </form>
+                    </div>
 
+                </select>
         </div>
     </body>
 </html>

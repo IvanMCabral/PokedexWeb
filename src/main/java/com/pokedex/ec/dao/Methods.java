@@ -5,11 +5,15 @@
  */
 package com.pokedex.ec.dao;
 
+import com.pokedex.ec.entity.Ability;
+import com.pokedex.ec.entity.Pokemon;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
 import javax.swing.JList;
@@ -25,40 +29,46 @@ public class Methods {
 
     private String message = "";
 
-    public void listPokemon(Connection con, JTable table, String string) {
-        DefaultTableModel model;
-        String[] columnas = {"ID", "NAME", "TYPE1", "TYPE2", "LEVEL", "EVOLUTION", "USER"};
-        model = new DefaultTableModel(null, columnas);
-
+    public ArrayList<Pokemon> listPokemon(Connection con, String string) {
+  
         String sql = string;
 
-        String[] filas = new String[7];
+        PreparedStatement st = null;
+        ResultSet rs;
 
-        Statement st = null;
-        ResultSet rs = null;
+        ArrayList<Pokemon> Pokemonlist = new ArrayList<>();
 
         try {
-            st = con.createStatement();
+            
+            
+            
+            st = con.prepareStatement(sql);
             rs = st.executeQuery(sql);
+
             while (rs.next()) {
-                for (int i = 0; i < 7; i++) {
-
-                    filas[i] = rs.getString(i + 1);
-
+                Pokemon pokemon = new Pokemon();
+                pokemon.setIdpokemon(rs.getInt("IDPOKEMON"));
+                pokemon.setName(rs.getString("NAME"));
+                pokemon.setType(rs.getString("TYPE"));
+                if(rs.getString("TYPE2") == null){
+                pokemon.setType2("does not have");
+                }else{
+                pokemon.setType2(rs.getString("TYPE2"));
                 }
-                String n = filas[5];
-                if (n.equals("1")) {
-                    filas[5] = "SI";
-                } else {
-                    filas[5] = "NO";
-                }
-                model.addRow(filas);
+ 
+                pokemon.setLevel(rs.getInt("LEVEL"));
+                pokemon.setEvolution(rs.getInt("EVOLUTION"));
+                pokemon.setUser(rs.getString("USER"));
+                Pokemonlist.add(pokemon);
+
             }
-            table.setModel(model);
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error Table List");
+        } catch (SQLException e) {
+
+            message = "ERROR SAVE \n " + e.getMessage();
         }
+
+        return Pokemonlist;
     }
 
     public int searchbyname(Connection con, String pokeName) {
@@ -121,11 +131,10 @@ public class Methods {
 
     }
 
-    public void list(Connection con, JList list, String name) {
-        DefaultListModel model;
+    public List list(Connection con,  String name) {
+        List lista = new ArrayList<>();
         int id = 0;
 
-        model = new DefaultListModel();
         String sql = name;
 
         Statement st = null;
@@ -137,16 +146,19 @@ public class Methods {
 
             while (rs.next()) {
                 id = 1;
-                String n = rs.getString("NAME");
-                model.addElement(n);
+                
+                String item =(rs.getString("NAME"));
+                lista.add(item);
 
             }
 
-            list.setModel(model);
+            
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "ERROR LIST ");
         }
+        
+        return lista;
 
     }
 

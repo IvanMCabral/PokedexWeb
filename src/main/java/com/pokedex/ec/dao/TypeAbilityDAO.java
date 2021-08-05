@@ -31,25 +31,25 @@ public class TypeAbilityDAO {
         mdao.cmbPoke(conn, cboxUser, name, from);
     }
 
-    public void listAbilities(Connection conn, JList list) {
+    public void listAbilities(Connection conn) {
 
         String name = "SELECT NAME FROM ABILITY ";
 
-        mdao.list(conn, list, name);
+        mdao.list(conn,  name);
     }
 
     public void listAbilitiesNeg(Connection conn,JList list, int id) {
 
         String name = "SELECT DISTINCT NAME FROM ABILITY WHERE NAME NOT IN (SELECT NAME FROM ABILITY WHERE IDPOKEMON = '" + id + "')";
                               
-        mdao.list(conn,list, name);
+        mdao.list(conn, name);
     }
 
     public void listTypes(Connection conn,JList list) {
 
         String name = "SELECT NAME FROM TYPE WHERE NAME NOT IN (SELECT TYPE FROM POKEMON) AND NAME NOT IN (SELECT TYPE2 FROM POKEMON WHERE TYPE2 IS NOT NULL) ";
 
-        mdao.list(conn,list, name);
+        mdao.list(conn, name);
     }
 
     public String addAbility(Connection conn, String object) {

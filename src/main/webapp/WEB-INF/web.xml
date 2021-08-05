@@ -4,9 +4,25 @@
         <servlet-name>Controller</servlet-name>
         <servlet-class>Controller.Controller</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>listController</servlet-name>
+        <servlet-class>Controller.listController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>viewController</servlet-name>
+        <servlet-class>Controller.viewController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Controller</servlet-name>
         <url-pattern>/Controller</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>listController</servlet-name>
+        <url-pattern>/listController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>viewController</servlet-name>
+        <url-pattern>/viewController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -10,6 +10,8 @@ import com.pokedex.ec.dao.EvolveDAO;
 import com.pokedex.ec.dao.Methods;
 import com.pokedex.ec.db.Conexion;
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JList;
 
 /**
@@ -68,11 +70,11 @@ public class EvolutionBO {
         return poke;
     }
 
-    public void listEvos(JList list, int id) {
+    public List listEvos( int id) {
         Connection conn = Conexion.getConnection();
-
+        List evolist = new ArrayList<>();
         try {
-            edao.listEvos(conn, list, id);
+            evolist = edao.listEvos(conn, id);
 
         } catch (Exception e) {
 
@@ -87,6 +89,6 @@ public class EvolutionBO {
                 message = message + " " + e.getMessage();
             }
         }
-
+        return evolist;
     }
 }

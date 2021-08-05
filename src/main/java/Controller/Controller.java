@@ -5,7 +5,9 @@ package Controller;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import com.pokedex.ec.bo.EvolutionBO;
 import com.pokedex.ec.bo.PokemonBO;
+import com.pokedex.ec.entity.Evolve;
 import com.pokedex.ec.entity.Pokemon;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,7 +24,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class Controller extends HttpServlet {
 
-    PokemonBO pbo = new PokemonBO();
+    private EvolutionBO ebo = new EvolutionBO();
+    private PokemonBO pbo = new PokemonBO();
     String list = "views/list.jsp";
     String add = "views/add.jsp";
     String edit = "views/edit.jsp";
@@ -71,9 +74,7 @@ public class Controller extends HttpServlet {
 
         String access = "";
         String action = request.getParameter("action");
-        if (action.equalsIgnoreCase("list")) {
-            access = list;
-        } else if (action.equalsIgnoreCase("add")) {
+        if (action.equalsIgnoreCase("add")) {
             access = add;
         } else if (action.equalsIgnoreCase("modify")) {
             access = modify;
@@ -87,13 +88,11 @@ public class Controller extends HttpServlet {
             access = modify;
             request.getRequestDispatcher(access);
 
-        }
-        else if (action.equalsIgnoreCase("delete")) {
+        } else if (action.equalsIgnoreCase("delete")) {
 
-            
             idPokemon = Integer.parseInt(request.getParameter("id"));
             pbo.deletePokemon(idPokemon);
-            
+
             access = modify;
             request.getRequestDispatcher(access);
 
@@ -141,7 +140,7 @@ public class Controller extends HttpServlet {
                     break;
                 case "Modify Pokemon":
                     p = new Pokemon();
-                    
+
                     name = request.getParameter("name");
                     p.setName(name);
                     type = request.getParameter("type");
@@ -156,23 +155,53 @@ public class Controller extends HttpServlet {
                     access = modify;
                     request.getRequestDispatcher(access).forward(request, response);
 
+                case "Add Evolution":
+                    p = new Pokemon();
+                    name = request.getParameter("name");
+                    p.setName(name);
+                    type = request.getParameter("type");
+                    p.setType(type);
+                    type2 = request.getParameter("type2");
+                    p.setType2(type2);
+                    p.setLevel(Integer.parseInt(request.getParameter("level")));
+                    user = request.getParameter("user");
+                    p.setUser(user);
+
+                    message = pbo.addPokemon(p);
+
+                    String Poke = (String) request.getParameter("pokeevo");
+                    int pokeev = pbo.serchaId(Poke);
+                    int pokeevo = ebo.lastPoke();
+
+                    Evolve ev = new Evolve();
+                    ev.setPoke(pokeev);
+                    ev.setEvolveAt(Integer.parseInt(request.getParameter("level")));
+                    ev.setEvolvesTo(pokeevo);
+
+                    ebo.addEvoTable(ev);
+
+                    if (message == "New Pokemon Inserted!!") {
+                        access = list;
+                    }
+                    break;
+
             }
-        
+
+        }
+
+        RequestDispatcher view = request.getRequestDispatcher(access);
+
+        view.forward(request, response);
+
     }
 
-    RequestDispatcher view = request.getRequestDispatcher(access);
-
-    view.forward (request, response);
-
-}
-
-/**
- * Returns a short description of the servlet.
- *
- * @return a String containing servlet description
- */
-@Override
-public String getServletInfo() {
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 

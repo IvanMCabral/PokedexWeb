@@ -13,6 +13,7 @@ import com.pokedex.ec.dao.PokemonDAO;
 import com.pokedex.ec.db.Conexion;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JTable;
@@ -179,6 +180,33 @@ public class PokemonBO {
         return Typeslist;
     }
     
+    public ArrayList<Pokemon> loadLastPokemon() {
+        Connection conn = Conexion.getConnection();
+
+        ArrayList<Pokemon> Pokemonlist = new ArrayList<>();
+
+        try {
+
+            Pokemonlist = pdao.getLastPokemon(conn);
+
+        } catch (Exception e) {
+
+            message = message + " " + e.getMessage();
+        }//finally try
+        finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+
+                }
+            } catch (Exception e) {
+                message = message + " " + e.getMessage();
+            }
+        }
+
+        return Pokemonlist;
+    }
+    
      public ArrayList<User> loadUser() {
         Connection conn = Conexion.getConnection();
 
@@ -207,11 +235,11 @@ public class PokemonBO {
     }
      
      
-     
+     /*
 
     public void tablePokemons(JTable table) {
         Connection conn = Conexion.getConnection();
-
+        
         String list = pdao.tablePokemons();
 
         try {
@@ -234,15 +262,15 @@ public class PokemonBO {
         }
 
     }
-
+*/
     
-    public void tablePokemonByUser(JTable table, String string) {
+    public ArrayList<Pokemon> PokemonByUser( String string) {
         Connection conn = Conexion.getConnection();
-
+        ArrayList<Pokemon> pokelist = new ArrayList<>();
         String list = pdao.listPokemon(string);
         try {
 
-            mdao.listPokemon(conn, table, list);
+           pokelist = mdao.listPokemon(conn, list);
 
         } catch (Exception e) {
 
@@ -258,15 +286,16 @@ public class PokemonBO {
                 message = message + " " + e.getMessage();
             }
         }
-
+        return pokelist;
     }
 
-    public void tablePokemonEvo(JTable table, int id) {
+    public ArrayList<Pokemon> ListEvolves( int id) {
         Connection conn = Conexion.getConnection();
+        ArrayList<Pokemon> pokelist = new ArrayList<>();
 
         try {
 
-            pdao.tablePokemonEvo(conn, table, id);
+            pokelist = pdao.ListEvolves(conn, id);
 
         } catch (Exception e) {
 
@@ -282,17 +311,18 @@ public class PokemonBO {
                 message = message + " " + e.getMessage();
             }
         }
-
+        return pokelist;
     }
 
-    public void listAbilities(JList list, int id) {
+    public List listAbilities( int id) {
         Connection conn = Conexion.getConnection();
+        List abilitylist = new ArrayList<>();
 
-        String name = pdao.listAbilities(list, id);
+        String name = pdao.listAbilities( id);
 
         try {
 
-            mdao.list(conn, list, name);
+            abilitylist = mdao.list(conn,  name);
 
         } catch (Exception e) {
 
@@ -308,9 +338,10 @@ public class PokemonBO {
                 message = message + " " + e.getMessage();
             }
         }
-
+        return abilitylist;
     }
 
+    /*
     public void listPoke(JList list) {
         Connection conn = Conexion.getConnection();
 
@@ -336,7 +367,7 @@ public class PokemonBO {
         }
 
     }
-
+*/
     public void cmbPoke(JComboBox cboxUser) {
 
         Connection conn = Conexion.getConnection();

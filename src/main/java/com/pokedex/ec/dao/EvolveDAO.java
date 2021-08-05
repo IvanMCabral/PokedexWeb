@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -81,11 +83,11 @@ public class EvolveDAO {
         return id;
     }
 
-    public void listEvos(Connection con, JList list, int id) {
+    public List listEvos(Connection con, int id) {
         int id2 = 0;
 
-        DefaultListModel model;
-        model = new DefaultListModel();
+        List lista = new ArrayList<>();
+        
         String sql = "SELECT EVOLVESTO FROM EVO WHERE IDPOKEMON = (?)";
         String sql1 = "SELECT LEVEL FROM EVO WHERE IDPOKEMON =(?)";
         String sql2 = "SELECT NAME FROM POKEMON WHERE IDPOKEMON =(?)";
@@ -104,7 +106,7 @@ public class EvolveDAO {
             }
 
             if (id2 > 0) {
-                model.clear();
+                
             } else {
                 id = id2;
             }
@@ -139,15 +141,17 @@ public class EvolveDAO {
                 while (rs.next()) {
 
                     String n = rs.getString("NAME");
-                    model.addElement("Evolves at " + m + " To: " + n);
+                    lista.add("Evolves at " + m + " To: " + n);
                 }
 
             }
-            list.setModel(model);
+            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "ERROR LIST");
         }
 
+        return lista;
+        
     }
 
 }

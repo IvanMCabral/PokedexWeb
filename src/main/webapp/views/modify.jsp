@@ -18,7 +18,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
         <title>List Pokemons</title>
-        
+
     </head>
     <body>
         <% PokemonBO pbo = new PokemonBO(); %>
@@ -47,51 +47,51 @@
                                 <label>Type</label>
                                 <select name="type" class="form-control form-control" >
                                     <option>${pokemonSelected.getType()}</option>
-                                <%
-                                    
-                                    List<Types> listTypes = pbo.loadTypes();
-                                if (listTypes != null) {
-                                    for (Types type : listTypes) {%>
+                                    <%
+
+                                        List<Types> listTypes = pbo.loadTypes();
+                                    if (listTypes != null) {
+                                        for (Types type : listTypes) {%>
                                     <option><%=type.getName()%></option>                        
-                                <% }
-                            } %>
-                            </select>
-                            
+                                    <% }
+                                    } %>
+                                </select>
+
                             </div>
                             <div class="form-group">
                                 <label>Type2</label>
                                 <select name="type2" class="form-control form-control text-center">
                                     <option>${pokemonSelected.getType2()}</option>
-                                <%
-                                if (listTypes != null) {
-                                    for (Types type : listTypes) {%>
-                                <option  value="<%=type.getName()%>"><%=type.getName()%></option>                        
-                                <% }
-                            } %>
-                            </select>
-                            
+                                    <%
+                                    if (listTypes != null) {
+                                        for (Types type : listTypes) {%>
+                                    <option  value="<%=type.getName()%>"><%=type.getName()%></option>                        
+                                    <% }
+                                    } %>
+                                </select>
+
                             </div>
-                            
+
                             <div class="form-group">
                                 <label>Level</label>
-                               <input type="text" name="level" class="form-control" value="${pokemonSelected.getLevel()}">
+                                <input type="text" name="level" class="form-control" value="${pokemonSelected.getLevel()}">
                             </div>
                             <div class="form-group">
                                 <label>User</label>
                                 <select name="user" class="form-control form-control">
                                     <option>${pokemonSelected.getUser()}</option>
-                                <%
+                                    <%
 
-                                    List<User> listUser = pbo.loadUser();
-                                if (listUser != null) {
-                                    for (User user : listUser) {%>
-                                <option  "><%=user.getName()%></option>                        
-                                <% }
-                            }%>
+                                        List<User> listUser = pbo.loadUser();
+                                    if (listUser != null) {
+                                        for (User user : listUser) {%>
+                                    <option  "><%=user.getName()%></option>                        
+                                    <% }
+                                    }%>
 
-                            </select>
+                                </select>
                             </div>
-                            
+
 
                             <input type="submit" name="action" value="Add Pokemon" class="btn btn-primary" >
                             <input type="submit" class="btn btn-success" name="action" value="Modify Pokemon" >
@@ -100,7 +100,7 @@
                 </div>
             </div>
 
-            <div class="col-md-8">
+            <div class="card col-md-8">
                 <table class="table">
                     <thead class="thead-dark">
                         <tr>
@@ -116,7 +116,7 @@
                     </thead>
                     <tbody>
                         <%
-                            
+
                             List<Pokemon> list = pbo.loadPokemon();
                             Iterator<Pokemon> iter = list.iterator();
                             Pokemon poke = null;
@@ -156,5 +156,6 @@
                     </tbody>
                 </table>
             </div>
+        </div>
     </body>
 </html>
