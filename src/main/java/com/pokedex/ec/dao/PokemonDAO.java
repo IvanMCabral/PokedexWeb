@@ -134,16 +134,16 @@ public class PokemonDAO {
             pst.setString(3, pok.getType2());
             pst.setInt(4, pok.getLevel());
             pst.setString(5, pok.getUser());
-            pst.setInt(6, pok.getIdpokemon());
-
-            message = "Edited OK";
+            pst.setInt(6, pok.getIdpokemon());           
 
             pst.execute();
             pst.close();
             con.commit();
+            
+            message = "Edited OK";
 
         } catch (SQLException e) {
-            message = "Error Save \n " + e.getMessage();
+            message = "Error Save";
         }
 
         return message;
