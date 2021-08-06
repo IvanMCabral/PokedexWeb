@@ -20,6 +20,15 @@ public class Pokemon {
     private int evolution;
     private String user;
 
+    public Pokemon(String name, String type, String type2, int level, int evolution, String user) {
+        this.name = name;
+        this.type = type;
+        this.type2 = type2;
+        this.level = level;
+        this.evolution = evolution;
+        this.user = user;
+    }
+
     public Pokemon(int idpokemon, String name, String type, String type2, int level, int evolution, String user) {
         this.idpokemon = idpokemon;
         this.name = name;

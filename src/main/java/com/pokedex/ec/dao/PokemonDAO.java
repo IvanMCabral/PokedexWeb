@@ -70,7 +70,7 @@ public class PokemonDAO {
             con.commit();
 
         } catch (SQLException e) {
-            message = "Error Save \n " + e.getMessage();
+            message = "Error Save";
         }
 
         return message;
